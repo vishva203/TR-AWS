@@ -20,7 +20,7 @@ pipeline {
       }
     }
 
-    stage('Terraform Apply') {
+    stage('Terraform Apply do') {
       steps {
         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-jenkins']]) {
           sh '''
