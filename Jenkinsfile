@@ -10,16 +10,16 @@ pipeline {
         sh '''
           export AWS_ACCESS_KEY_ID=$AWS_CREDS_USR
           export AWS_SECRET_ACCESS_KEY=$AWS_CREDS_PSW
-          terraform init -input=false
+          terraform init
         '''
       }
     }
-    stage('Terraform Destroy') {
+    stage('Terraform Destroy do') {
       steps {
         sh '''
           export AWS_ACCESS_KEY_ID=$AWS_CREDS_USR
           export AWS_SECRET_ACCESS_KEY=$AWS_CREDS_PSW
-          terraform plan -destroy -out=tfplan -input=false
+          terraform plan -destroy -out=tfplan
           terraform apply -auto-approve tfplan
         '''
       }
