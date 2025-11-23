@@ -19,7 +19,7 @@ pipeline {
         }
       }
     }
-
+    /*
     stage('Terraform Apply do') {
       steps {
         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-jenkins']]) {
@@ -29,7 +29,16 @@ pipeline {
           '''
         }
       }
-    }
-
+    }*/
+    stage('Terraform Destroy') {
+      steps {
+        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-jenkins']]) {
+          sh '''
+            terraform plan -destroy -out=tfplan
+            terraform apply -auto-approve tfplan
+          '''
+        }
+      }
+    }  
   }
 }
