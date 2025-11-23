@@ -17,7 +17,7 @@ pipeline {
       }
     }
 
-    stage('Terraform Destroy do') {
+    stage('Terraform Destroy') {
       steps {
         sh '''
           export AWS_ACCESS_KEY_ID=$AWS_CREDS_USR
