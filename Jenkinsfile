@@ -13,11 +13,11 @@ pipeline {
         '''
       }
     }
-    stage('Terraform Apply') {
+    stage('Terraform Destroy') {
       steps {
         sh '''
           terraform plan -out=tfplan
-          terraform apply -auto-approve tfplan
+          terraform destroy -auto-approve tfplan
         '''
       }
     }
