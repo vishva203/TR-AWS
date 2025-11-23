@@ -2,36 +2,32 @@ pipeline {
   agent any
 
   environment {
-    AWS_CREDS = credentials('aws-jenkins')
-    AWS_REGION = "ap-south-1"      // <-- ADD THIS
+    AWS_REGION = "ap-south-1"
   }
 
   stages {
 
     stage('Terraform Init') {
       steps {
-        sh '''
-          export AWS_ACCESS_KEY_ID="$AWS_CREDS_USR"
-          export AWS_SECRET_ACCESS_KEY="$AWS_CREDS_PSW"
-          export AWS_REGION="$AWS_REGION"
+        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-jenkins']]) {
+          sh '''
+            echo "AWS Identity Check:"
+            aws sts get-caller-identity
 
-          echo "Using AWS Access Key: $AWS_ACCESS_KEY_ID"
-
-          terraform init -input=false
-        '''
+            terraform init -input=false
+          '''
+        }
       }
     }
 
     stage('Terraform Destroy') {
       steps {
-        sh '''
-          export AWS_ACCESS_KEY_ID="$AWS_CREDS_USR"
-          export AWS_SECRET_ACCESS_KEY="$AWS_CREDS_PSW"
-          export AWS_REGION="$AWS_REGION"
-
-          terraform plan -destroy -out=tfplan -input=false
-          terraform apply -auto-approve tfplan
-        '''
+        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-jenkins']]) {
+          sh '''
+            terraform plan -destroy -out=tfplan -input=false
+            terraform apply -auto-approve tfplan
+          '''
+        }
       }
     }
 
