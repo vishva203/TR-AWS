@@ -3,8 +3,9 @@ pipeline {
   environment {
     AWS_CREDS = credentials('aws-jenkins')
   }
-  /*
+  
   stages {
+    /*
     stage('Terraform Init') {
       steps {
         sh '''
